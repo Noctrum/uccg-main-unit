@@ -52,9 +52,12 @@ DEBUG = 1
 
 # Functions
 def init():
-    """! Initializes the program."""
+    """! Initializes the program.
+    @return  result of initialization - True if everything OK
+    """
     if DEBUG:
         print("Initializing program.")
+    return True
 
 def send_report():
     """! Sends a report to the server."""
