@@ -67,7 +67,7 @@ def main():
     """! Main program entry."""
     init()  # program initialization
     # Sensors
-    sensor = sensors.Sensor("MySensor")
+    sensor = sensors.Sensor("MySensor", 1)
     print(sensor.read())
     
 if __name__ == "__main__":
