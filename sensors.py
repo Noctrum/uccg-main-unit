@@ -52,7 +52,7 @@ class Sensor:
         self.name = name
         self.pin = pin
         ## The value of the sensor.
-        self.value = random.randint(0, 50)
+        self.value = random.choices(range(0, 50), k=10000)
     def read(self):
         """! Gets current value from the sensor.
         @return Measured value
@@ -76,13 +76,13 @@ class TemperatureSensor(Sensor):
         """! Converts the temperature to Kelvin.
         @return Temperature in Kelvins.
         """
-        return self.value + 273
+        return [i+273 for i in self.value]
 
     def fahrenheit(self):
         """! Converts the temperature to Fahrenheit.
         @return Temperature in degrees Fahrenheit.
         """
-        return self.value*1.8 + 32
+        return [i*1.8+32 for i in self.value]
 
     def read(self, unit="C"):
         """! Gets current temperature reading and returns it.
