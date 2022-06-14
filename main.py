@@ -65,10 +65,20 @@ def send_report():
 
 def main():
     """! Main program entry."""
+    import cProfile, pstats
     init()  # program initialization
     # Sensors
-    sensor = sensors.Sensor("MySensor", 1)
-    print(sensor.read())
+    tempSensor = sensors.TemperatureSensor("TempSensor", 2)
+
+    profiler = cProfile.Profile()
+    profiler.enable()
+    tempSensor.set_temp_scale("F")
+    for _ in range(10000):
+        tempSensor.read()
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats()
+    return
     
 if __name__ == "__main__":
     main()
