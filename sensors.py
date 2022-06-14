@@ -91,9 +91,9 @@ class TemperatureSensor(Sensor):
         @return Measured temperature in selected unit.
         """
         if unit == "K":
-            return __kelvin()
+            return self.kelvin()
         if unit == "F":
-            return __fahrenheit()
+            return self.fahrenheit()
         return self.value
 
 class MoistureSensor(Sensor):
