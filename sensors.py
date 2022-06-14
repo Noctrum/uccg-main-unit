@@ -52,7 +52,7 @@ class Sensor:
         self.name = name
         self.pin = pin
         ## The value of the sensor.
-        self.value = random.randint(0, 50)
+        self.value = random.choices(range(0, 50), k=10000)
     def read(self):
         """! Gets current value from the sensor.
         @return Measured value
@@ -71,30 +71,53 @@ class TemperatureSensor(Sensor):
         @return  An instance of the TemperatureSensor class initialized with the specified name, pin number and unit.
         """
         super().__init__(name, pin)
-    
+        self.tempUnit = "C"
+    def kelvin2Celsius(self):
+        """! Converts the temperature from Kelvin to celsius.
+        """
+        self.value = [i - 273 for i in self.value]
     def kelvin(self):
         """! Converts the temperature to Kelvin.
-        @return Temperature in Kelvins.
         """
-        return self.value + 273
+        self.value = [i + 273 for i in self.value]
 
     def fahrenheit(self):
         """! Converts the temperature to Fahrenheit.
-        @return Temperature in degrees Fahrenheit.
         """
-        return self.value*1.8 + 32
-
-    def read(self, unit="C"):
-        """! Gets current temperature reading and returns it.
-        @param unit  The temperature unit: "K" (Kelvin), "F" (Fahrenheit) and "C" (Celsius)
+        self.value = [i * 1.8 + 32 for i in self.value]
+    def fahrenheit2Celsius(self):
+        """! Converts the temperature from Fahrenheit to celsius.
+        """
+        self.value = [(i-32)/ 1.8 for i in self.value]
+    def set_temp_scale(self, unit="C"):
+        """! Sets temperature unit and converts temp.
+        @param unit  The target temperature unit: "K" (Kelvin), "F" (Fahrenheit) and "C" (Celsius)
             defaults to Celsius if no valid value provided.
+        """
+        if unit != self.tempUnit:
+            if self.tempUnit == "C":
+                if unit == "F":
+                    self.fahrenheit()
+                    self.tempUnit = "F"
+                if unit == "K":
+                    self.kelvin()
+                    self.tempUnit = "K"
+            else:
+                if self.tempUnit == "F":
+                    self.fahrenheit2Celsius()
+                if self.tempUnit == "K":
+                    self.kelvin2Celsius()
+                self.tempUnit = "C"
+                self.set_temp_scale(unit)
+
+
+
+    def read(self):
+        """! Gets current temperature reading and returns it.
         @return Measured temperature in selected unit.
         """
-        if unit == "K":
-            return __kelvin()
-        if unit == "F":
-            return __fahrenheit()
         return self.value
+
 
 class MoistureSensor(Sensor):
     """! The moisture sensor class.
